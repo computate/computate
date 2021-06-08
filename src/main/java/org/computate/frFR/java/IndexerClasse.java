@@ -160,9 +160,15 @@ public class IndexerClasse extends RegarderClasseBase {
 	 */
 	public static final String VAL_nomCanoniqueVertxJsonObject = "io.vertx.core.json.JsonObject";
 
-	/**
-	 * Var.enUS: classPartsSolrInputDocument
-	 */
+	ClasseParts classePartsLocalTimeSerializer;
+	ClasseParts classePartsLocalTimeDeserializer;
+
+	ClasseParts classePartsLocalDateSerializer;
+	ClasseParts classePartsLocalDateDeserializer;
+
+	ClasseParts classePartsZonedDateTimeSerializer;
+	ClasseParts classePartsZonedDateTimeDeserializer;
+
 	ClasseParts classePartsSolrInputDocument;
 	/**
 	 * Var.enUS: classPartsSolrDocument
@@ -189,17 +195,9 @@ public class IndexerClasse extends RegarderClasseBase {
 	 */
 	ClasseParts classePartsHashSet;
 	/**
-	 * Var.enUS: classPartsSiteContext
-	 */
-	ClasseParts classePartsSiteContexte;
-	/**
 	 * Var.enUS: classPartsSiteRequest
 	 */ 
 	ClasseParts classePartsRequeteSite;
-	/**
-	 * Var.enUS: classPartsSiteConfig
-	 */
-	ClasseParts classePartsConfigSite;
 	/**
 	 * Var.enUS: classPartsSiteUser
 	 */
@@ -1556,40 +1554,6 @@ public class IndexerClasse extends RegarderClasseBase {
 	}
 
 	/**
-	 * Var.enUS: classPartsSiteContext
-	 * Param1.var.enUS: domainPackageName
-	 * Param2.var.enUS: classLanguageName
-	 * r: classeLangueNom
-	 * r.enUS: classLanguageName
-	 * r: classePartsPourNomSimple
-	 * r.enUS: classPartsForSimpleName
-	 * r: nomEnsembleDomaine
-	 * r.enUS: domainPackageName
-	 * r: SiteContexte
-	 * r.enUS: SiteContext
-	 */
-	protected ClasseParts classePartsSiteContexte(String nomEnsembleDomaine, String langueNom) throws Exception {
-		return classePartsPourNomSimple(nomEnsembleDomaine, str_SiteContexte(this.langueNomActuel), langueNom);
-	}
-
-	/**
-	 * Var.enUS: classPartsSiteConfig
-	 * Param1.var.enUS: domainPackageName
-	 * Param2.var.enUS: classLanguageName
-	 * r: classeLangueNom
-	 * r.enUS: classLanguageName
-	 * r: classePartsPourNomSimple
-	 * r.enUS: classPartsForSimpleName
-	 * r: nomEnsembleDomaine
-	 * r.enUS: domainPackageName
-	 * r: ConfigSite
-	 * r.enUS: SiteConfig
-	 */
-	protected ClasseParts classePartsConfigSite(String nomEnsembleDomaine, String langueNom) throws Exception {
-		return classePartsPourNomSimple(nomEnsembleDomaine, str_ConfigSite(this.langueNomActuel), langueNom);
-	}
-
-	/**
 	 * Var.enUS: classPartsSiteUser
 	 * Param1.var.enUS: domainPackageName
 	 * Param2.var.enUS: classLanguageName
@@ -1739,6 +1703,30 @@ public class IndexerClasse extends RegarderClasseBase {
 
 	protected ClasseParts classePartsConfigCles(String nomEnsembleDomaine, String langueNom) throws Exception {
 		return classePartsPourNomSimple(nomEnsembleDomaine, str_ConfigCles(this.langueNomActuel), langueNom);
+	}
+
+	protected ClasseParts classePartsZonedDateTimeDeserializer(String nomEnsembleDomaine, String langueNom) throws Exception {
+		return classePartsPourNomSimple(nomEnsembleDomaine, "ZonedDateTimeDeserializer", langueNom);
+	}
+
+	protected ClasseParts classePartsZonedDateTimeSerializer(String nomEnsembleDomaine, String langueNom) throws Exception {
+		return classePartsPourNomSimple(nomEnsembleDomaine, "ZonedDateTimeSerializer", langueNom);
+	}
+
+	protected ClasseParts classePartsLocalDateDeserializer(String nomEnsembleDomaine, String langueNom) throws Exception {
+		return classePartsPourNomSimple(nomEnsembleDomaine, "LocalDateDeserializer", langueNom);
+	}
+
+	protected ClasseParts classePartsLocalDateSerializer(String nomEnsembleDomaine, String langueNom) throws Exception {
+		return classePartsPourNomSimple(nomEnsembleDomaine, "LocalDateSerializer", langueNom);
+	}
+
+	protected ClasseParts classePartsLocalTimeDeserializer(String nomEnsembleDomaine, String langueNom) throws Exception {
+		return classePartsPourNomSimple(nomEnsembleDomaine, "LocalTimeDeserializer", langueNom);
+	}
+
+	protected ClasseParts classePartsLocalTimeSerializer(String nomEnsembleDomaine, String langueNom) throws Exception {
+		return classePartsPourNomSimple(nomEnsembleDomaine, "LocalTimeSerializer", langueNom);
 	}
 
 	/**
@@ -2301,10 +2289,6 @@ public class IndexerClasse extends RegarderClasseBase {
 	 * r.enUS: classPartsGenPageAdd
 	 * r: classePartsGenApiAjouter
 	 * r.enUS: classPartsGenApiAdd
-	 * r: classePartsSiteContexte
-	 * r.enUS: classPartsSiteContext
-	 * r: classePartsConfigSite
-	 * r.enUS: classPartsSiteConfig
 	 * r: classePartsUtilisateurSite
 	 * r.enUS: classPartsSiteUser
 	 * r: classePartsRequeteApi
@@ -3363,6 +3347,7 @@ public class IndexerClasse extends RegarderClasseBase {
 		}
 		Boolean classeEstBase = indexerStockerSolr(classeDoc, "classeEstBase", !classeBaseEtendGen || StringUtils.isEmpty(classeNomCompletSuperGenerique) || StringUtils.equals(classeNomCompletSuperGenerique, "java.lang.Object"));
 		Boolean classeEtendBase = indexerStockerSolr(classeDoc, "classeEtendBase", !classeEstBase && classeBaseEtendGen && !StringUtils.equals(classeNomCompletSuperGenerique, "java.lang.Object"));
+		Boolean classePromesse = false;
 		indexerStockerSolr(classeDoc, "classeBaseEtendGen", classeBaseEtendGen);
 		Boolean classeContientRequeteSite = false;
 		try {
@@ -3453,8 +3438,6 @@ public class IndexerClasse extends RegarderClasseBase {
 		classePartsTest = ClasseParts.initClasseParts(this, "org.junit.Test", classeLangueNom);
 		classePartsList = ClasseParts.initClasseParts(this, List.class.getCanonicalName(), classeLangueNom);
 		classePartsArrayList = ClasseParts.initClasseParts(this, ArrayList.class.getCanonicalName(), classeLangueNom);
-		classePartsSiteContexte = classePartsSiteContexte(nomEnsembleDomaine, classeLangueNom);
-		classePartsConfigSite = classePartsConfigSite(nomEnsembleDomaine, classeLangueNom);
 		classePartsUtilisateurSite = classePartsUtilisateurSite(nomEnsembleDomaine, classeLangueNom);
 		classePartsRequeteApi = classePartsRequeteApi(nomEnsembleDomaine, classeLangueNom);
 		classePartsCluster = classePartsCluster(nomEnsembleDomaine, classeLangueNom);
@@ -3469,6 +3452,12 @@ public class IndexerClasse extends RegarderClasseBase {
 		classePartsRequeteSite = classePartsRequeteSite(nomEnsembleDomaine, classeLangueNom);
 		classePartsMailVerticle = classePartsMailVerticle(nomEnsembleDomaine, classeLangueNom);
 		classePartsConfigCles = classePartsConfigCles(nomEnsembleDomaine, classeLangueNom);
+		classePartsLocalTimeDeserializer = classePartsLocalTimeDeserializer(nomEnsembleDomaine, classeLangueNom);
+		classePartsLocalTimeSerializer = classePartsLocalTimeSerializer(nomEnsembleDomaine, classeLangueNom);
+		classePartsLocalDateDeserializer = classePartsLocalDateDeserializer(nomEnsembleDomaine, classeLangueNom);
+		classePartsLocalDateSerializer = classePartsLocalDateSerializer(nomEnsembleDomaine, classeLangueNom);
+		classePartsZonedDateTimeDeserializer = classePartsZonedDateTimeDeserializer(nomEnsembleDomaine, classeLangueNom);
+		classePartsZonedDateTimeSerializer = classePartsZonedDateTimeSerializer(nomEnsembleDomaine, classeLangueNom);
 
 		Boolean classeInitLoin = !regexTrouve("^" + str_InitLoin(classeLangueNom) + ":\\s*(false)$", classeCommentaire);
 		if(classeInitLoin)
@@ -3623,7 +3612,15 @@ public class IndexerClasse extends RegarderClasseBase {
 			}
 		}
 
-		if(classeEtendBase || classeEstBase) {
+		if(classeEtendBase) {
+			if(classeNomSimpleSuperGenerique.equals(classePartsCluster.nomSimple(langueNom)))
+				classePromesse = true;
+			classePartsGenAjouter(classePartsCluster, classeLangueNom);
+			classePartsGenAjouter(classePartsToutEcrivain, classeLangueNom);
+		}
+		else if(classeEstBase) {
+			if(classePartsCluster != null && classeNomSimple.equals(classePartsCluster.nomSimple(langueNom)))
+				classePromesse = true;
 			classePartsGenAjouter(classePartsCluster, classeLangueNom);
 			classePartsGenAjouter(classePartsToutEcrivain, classeLangueNom);
 		}
@@ -3638,12 +3635,24 @@ public class IndexerClasse extends RegarderClasseBase {
 		classePartsGenAjouter(ClasseParts.initClasseParts(this, "org.apache.commons.text.StringEscapeUtils", classeLangueNom), classeLangueNom);
 		classePartsGenAjouter(ClasseParts.initClasseParts(this, "org.apache.commons.lang3.StringUtils", classeLangueNom), classeLangueNom);
 		classePartsGenAjouter(ClasseParts.initClasseParts(this, "java.util.Objects", classeLangueNom), classeLangueNom);
+		classePartsGenAjouter(ClasseParts.initClasseParts(this, "com.fasterxml.jackson.annotation.JsonProperty", classeLangueNom), classeLangueNom);
 		classePartsGenAjouter(ClasseParts.initClasseParts(this, "com.fasterxml.jackson.annotation.JsonIgnore", classeLangueNom), classeLangueNom);
 		classePartsGenAjouter(ClasseParts.initClasseParts(this, JsonFormat.class.getCanonicalName(), classeLangueNom), classeLangueNom);
 		classePartsGenAjouter(ClasseParts.initClasseParts(this, JsonSerialize.class.getCanonicalName(), classeLangueNom), classeLangueNom);
 		classePartsGenAjouter(ClasseParts.initClasseParts(this, JsonDeserialize.class.getCanonicalName(), classeLangueNom), classeLangueNom);
-		classePartsGenAjouter(ClasseParts.initClasseParts(this, "com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer", classeLangueNom), classeLangueNom);
-		classePartsGenAjouter(ClasseParts.initClasseParts(this, "com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer", classeLangueNom), classeLangueNom);
+
+		if(classePartsLocalDateSerializer != null)
+			classePartsGenAjouter(classePartsLocalDateSerializer, classeLangueNom);
+
+		if(classePartsLocalDateDeserializer != null)
+			classePartsGenAjouter(classePartsLocalDateDeserializer, classeLangueNom);
+
+		if(classePartsZonedDateTimeSerializer != null)
+			classePartsGenAjouter(classePartsZonedDateTimeSerializer, classeLangueNom);
+
+		if(classePartsZonedDateTimeDeserializer != null)
+			classePartsGenAjouter(classePartsZonedDateTimeDeserializer, classeLangueNom);
+
 		classePartsGenAjouter(ClasseParts.initClasseParts(this, "com.fasterxml.jackson.annotation.JsonInclude", classeLangueNom), classeLangueNom);
 		classePartsGenAjouter(ClasseParts.initClasseParts(this, "com.fasterxml.jackson.annotation.JsonInclude.Include", classeLangueNom), classeLangueNom);
 		classePartsGenAjouter(ClasseParts.initClasseParts(this, ToStringSerializer.class.getCanonicalName(), classeLangueNom), classeLangueNom);
@@ -4116,10 +4125,15 @@ public class IndexerClasse extends RegarderClasseBase {
 						JavaClass entiteClasseQdox = methodeParamsQdox.get(0).getJavaClass();
 						ClasseParts entiteClasseParts = ClasseParts.initClasseParts(this, entiteClasseQdox, classeLangueNom);
 						Boolean entiteCouverture = false;
+						Boolean entitePromesse = false;
 
 						if(classePartsCouverture == null)
 							throw new RuntimeException(String.format("%s %s %s %s %s. ", str_classe(classeLangueNom), str_Couverture(classeLangueNom), str_manquante(classeLangueNom), str_dans(classeLangueNom), cheminSrcMainJava));
-						if(entiteClasseParts.nomSimple(classeLangueNom).equals(classePartsCouverture.nomSimple(classeLangueNom))) {
+						if(StringUtils.equalsAny(entiteClasseParts.nomSimple(classeLangueNom), "Promise", classePartsCouverture.nomSimple(classeLangueNom))) {
+							if(StringUtils.equals(entiteClasseParts.nomSimple(classeLangueNom), "Promise")) {
+								entitePromesse = true;
+								classePromesse = true;
+							}
 							entiteClasseParts = ClasseParts.initClasseParts(this, entiteClasseParts.nomCanoniqueGenerique(classeLangueNom), classeLangueNom);
 							entiteCouverture = true;
 							classeContientCouverture = true;
@@ -4155,6 +4169,7 @@ public class IndexerClasse extends RegarderClasseBase {
 							}
 						}
 
+						indexerStockerSolr(entiteDoc, "entitePromesse", entitePromesse);
 						indexerStockerSolr(entiteDoc, "entiteCouverture", entiteCouverture);
 						Boolean entiteInitialise = indexerStockerSolr(entiteDoc, "entiteInitialise", !entiteVar.endsWith("_") && BooleanUtils.isTrue(entiteClasseParts.getEtendGen()));
 
@@ -5728,8 +5743,8 @@ public class IndexerClasse extends RegarderClasseBase {
 				classePartsGenApiAjouter(classePartsMailVerticle, classeLangueNom);
 				classePartsGenApiAjouter(classePartsConfigCles, classeLangueNom);
 				classePartsGenApiAjouter(classePartsBaseApiServiceImpl, classeLangueNom);
+				classePartsGenApiAjouter(ClasseParts.initClasseParts(this, "io.vertx.ext.web.client.WebClient", classeLangueNom), classeLangueNom);
 				classePartsGenApiAjouter(ClasseParts.initClasseParts(this, "java.util.Objects", classeLangueNom), classeLangueNom);
-				classePartsGenApiAjouter(ClasseParts.initClasseParts(this, "org.apache.solr.client.solrj.SolrClient", classeLangueNom), classeLangueNom);
 				classePartsGenApiAjouter(ClasseParts.initClasseParts(this, "io.vertx.core.WorkerExecutor", classeLangueNom), classeLangueNom);
 				classePartsGenApiAjouter(ClasseParts.initClasseParts(this, "io.vertx.core.eventbus.EventBus", classeLangueNom), classeLangueNom);
 				classePartsGenApiAjouter(ClasseParts.initClasseParts(this, "io.vertx.pgclient.PgPool", classeLangueNom), classeLangueNom);
@@ -5739,6 +5754,7 @@ public class IndexerClasse extends RegarderClasseBase {
 				classePartsGenApiAjouter(ClasseParts.initClasseParts(this, "java.util.Collections", classeLangueNom), classeLangueNom);
 				classePartsGenApiAjouter(ClasseParts.initClasseParts(this, "java.util.Map", classeLangueNom), classeLangueNom);
 				classePartsGenApiAjouter(ClasseParts.initClasseParts(this, "java.util.concurrent.TimeUnit", classeLangueNom), classeLangueNom);
+				classePartsGenApiAjouter(ClasseParts.initClasseParts(this, "java.time.Instant", classeLangueNom), classeLangueNom);
 				classePartsGenApiAjouter(ClasseParts.initClasseParts(this, "java.util.stream.Collectors", classeLangueNom), classeLangueNom);
 				classePartsGenApiAjouter(ClasseParts.initClasseParts(this, "io.vertx.core.json.Json", classeLangueNom), classeLangueNom);
 				classePartsGenApiAjouter(ClasseParts.initClasseParts(this, "org.apache.solr.client.solrj.SolrQuery", classeLangueNom), classeLangueNom);
@@ -5751,6 +5767,7 @@ public class IndexerClasse extends RegarderClasseBase {
 				classePartsGenApiAjouter(ClasseParts.initClasseParts(this, "java.io.PrintWriter", classeLangueNom), classeLangueNom);
 				classePartsGenApiAjouter(ClasseParts.initClasseParts(this, "org.apache.solr.common.SolrDocumentList", classeLangueNom), classeLangueNom);
 				classePartsGenApiAjouter(ClasseParts.initClasseParts(this, "org.apache.solr.common.SolrDocument", classeLangueNom), classeLangueNom);
+				classePartsGenApiAjouter(ClasseParts.initClasseParts(this, "org.apache.solr.common.SolrInputDocument", classeLangueNom), classeLangueNom);
 				classePartsGenApiAjouter(ClasseParts.initClasseParts(this, "java.util.Collection", classeLangueNom), classeLangueNom);
 				classePartsGenApiAjouter(ClasseParts.initClasseParts(this, "java.math.BigDecimal", classeLangueNom), classeLangueNom);
 				classePartsGenApiAjouter(ClasseParts.initClasseParts(this, RoundingMode.class.getCanonicalName(), classeLangueNom), classeLangueNom);
@@ -5796,6 +5813,8 @@ public class IndexerClasse extends RegarderClasseBase {
 				classePartsGenApiAjouter(ClasseParts.initClasseParts(this, "org.apache.http.NameValuePair", classeLangueNom), classeLangueNom);
 				classePartsGenApiAjouter(ClasseParts.initClasseParts(this, "io.vertx.ext.web.api.service.ServiceRequest", classeLangueNom), classeLangueNom);
 				classePartsGenApiAjouter(ClasseParts.initClasseParts(this, "io.vertx.ext.web.api.service.ServiceResponse", classeLangueNom), classeLangueNom);
+				classePartsGenApiAjouter(ClasseParts.initClasseParts(this, "io.vertx.ext.web.client.predicate.ResponsePredicate", classeLangueNom), classeLangueNom);
+				classePartsGenApiAjouter(ClasseParts.initClasseParts(this, "java.util.HashMap", classeLangueNom), classeLangueNom);
 				classePartsGenApiAjouter(ClasseParts.initClasseParts(this, "io.vertx.ext.auth.User", classeLangueNom), classeLangueNom);
 				classePartsGenApiAjouter(ClasseParts.initClasseParts(this, "java.util.Optional", classeLangueNom), classeLangueNom);
 				classePartsGenApiAjouter(ClasseParts.initClasseParts(this, "java.util.stream.Stream", classeLangueNom), classeLangueNom);
@@ -6334,6 +6353,10 @@ public class IndexerClasse extends RegarderClasseBase {
 		Boolean classeIndexe = indexerStockerSolr(classeDoc, "classeIndexe", regexTrouve("^" + str_Indexe(classeLangueNom) + ":\\s*(true)$", classeCommentaire) || classeSauvegarde || classeModele || classePage);
 		Boolean classeImage = indexerStockerSolr(classeDoc, "classeImage", regexTrouve("^" + str_Image(classeLangueNom) + ":\\s*(true)$", classeCommentaire));
 
+		stockerSolr(classeDoc, "classePromesse", classePromesse);
+		classePartsGenAjouter(ClasseParts.initClasseParts(this, "io.vertx.core.Promise", classeLangueNom), classeLangueNom);
+		classePartsGenAjouter(ClasseParts.initClasseParts(this, "io.vertx.core.Future", classeLangueNom), classeLangueNom);
+
 		if(classeIndexe) {
 			classePartsGenAjouter(classePartsSolrInputDocument, classeLangueNom);
 			classePartsGenAjouter(classePartsSolrClient, classeLangueNom);
@@ -6382,7 +6405,6 @@ public class IndexerClasse extends RegarderClasseBase {
 				}
 			}
 		}
-		clientSolrComputate.commit(true, true);
 
 		indexerStockerSolr(classeDoc, "classeTrisTrouves", classeTrisTrouves); 
 		for(Integer i = 0; i < classeTrisOrdre.size(); i++) {
@@ -6406,10 +6428,10 @@ public class IndexerClasse extends RegarderClasseBase {
 		indexerStockerSolr(classeDoc, "classePage", classePage);
 
 		clientSolrComputate.add(classeDoc);
-		clientSolrComputate.commit(true, true);
+		clientSolrComputate.commit(false, false, true);
 		String qSupprimer = concat("classeCheminAbsolu_indexed_string", ":\"", classeChemin, "\" AND (modifiee_indexed_date:[* TO ", modifiee.minusMillis(1).toString(), "] OR (*:* AND -modifiee_indexed_date:[* TO *]))");
 		UpdateResponse d = clientSolrComputate.deleteByQuery(qSupprimer);
-		clientSolrComputate.commit(true, true); 
+		clientSolrComputate.commit(false, false, true); 
 		return classeDoc;
 	}
 }
