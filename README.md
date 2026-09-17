@@ -3,8 +3,8 @@
 Christopher has migrated to [codeberg.org](https://codeberg.org/computate) to better support Open Source software. 
 
 - See [computate on Codeberg](https://codeberg.org/computate) for my forks. 
-- See [computate-ansible on Codeberg](https://codeberg.org/computate) for my Ansible Automation. 
-- See [computateorg on Codeberg](https://codeberg.org/computateorg) for my Ansible Automation. 
+- See [computate-ansible on Codeberg](https://codeberg.org/computate-ansible) for my Ansible Automation. 
+- See [computateorg on Codeberg](https://codeberg.org/computateorg) for my SPINE Programming resources. 
 
 All about Christopher Tate
 
